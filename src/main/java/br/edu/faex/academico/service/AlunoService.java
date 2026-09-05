@@ -37,9 +37,6 @@ public class AlunoService {
         aluno.setId(proximoId);
         proximoId++;
         this.repository.salvar(aluno);
-
-
-        this.repository.salvar(aluno);
     }
 
     public List<Aluno> listar(){
