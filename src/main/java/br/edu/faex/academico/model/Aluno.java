@@ -41,4 +41,8 @@ public class Aluno {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
