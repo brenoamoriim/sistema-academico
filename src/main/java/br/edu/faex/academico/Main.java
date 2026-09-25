@@ -38,6 +38,14 @@ public class Main {
             System.out.println("Aluno não encontrado.");
         }
 
+        alunoController.excluir(2L);
+        for (Aluno alunoLista : alunoController.listar()) {
+            System.out.println("ID: " + alunoLista.getId());
+            System.out.println("Nome: " + alunoLista.getNome());
+            System.out.println("E-mail: " + alunoLista.getEmail());
+            System.out.println("-------------------------");
+        }
+
         Professor professor1 = new Professor("João Pereira", "joao.pereira@faex.edu.br");
         Professor professor2 = new Professor("Ana Souza", "ana.souza@faex.edu.br");
 
