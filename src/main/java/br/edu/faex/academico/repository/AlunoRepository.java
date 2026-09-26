@@ -31,4 +31,13 @@ public class AlunoRepository {
             }
         }
     }
+    public void atualizar(Aluno alunoEditado){
+        for(Aluno aluno:alunos){
+            if (aluno.getId().equals(alunoEditado.getId())){
+                aluno.setNome(alunoEditado.getNome());
+                aluno.setEmail(alunoEditado.getEmail());
+                return;
+            }
+        }
+    }
 }
