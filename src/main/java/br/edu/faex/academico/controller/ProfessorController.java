@@ -23,4 +23,10 @@ public class ProfessorController {
     public Professor buscarPorId(Long id) {
         return service.buscarPorId(id);
     }
+    public void atualizar(Professor professorEditado){
+        service.atualizar(professorEditado);
+    }
+    public void excluir(Long id){
+        service.excluir(id);
+    }
 }

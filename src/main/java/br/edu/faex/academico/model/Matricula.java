@@ -51,6 +51,10 @@ public class Matricula {
         this.nota2 = nota2;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public double getMedia() {
         return (nota1 + nota2) / 2.0;
     }

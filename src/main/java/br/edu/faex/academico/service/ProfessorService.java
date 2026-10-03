@@ -52,4 +52,39 @@ public class ProfessorService {
         }
         return professor;
     }
+    public void atualizar(Professor professorEditado){
+        Professor professor = repository.buscarPorId(professorEditado.getId());
+        if (professor == null){
+            System.out.println("Professor não encontrado.");
+            return;
+        }
+
+        if (professorEditado.getNome() == null || professorEditado.getNome().isBlank()) {
+            System.out.println("O nome do professor é obrigatório.");
+            return;
+        }
+
+        if (professorEditado.getEmail() == null || professorEditado.getEmail().isBlank()) {
+            System.out.println("O e-mail do professor é obrigatório.");
+            return;
+        }
+
+        if (!professorEditado.getEmail().contains("@")) {
+            System.out.println("E-mail inválido.");
+            return;
+        }
+
+        repository.atualizar(professorEditado);
+        System.out.println("Professor atualizado com sucesso.");
+    }
+
+    public void excluir(Long id){
+        Professor professor = repository.buscarPorId(id);
+        if (professor == null){
+            System.out.println("Professor não encontrado");
+            return;
+        }
+        repository.excluir(id);
+        System.out.println("Professor excluído com sucesso.");
+    }
 }

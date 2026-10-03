@@ -24,4 +24,21 @@ public class ProfessorRepository {
         }
         return null;
     }
+    public void excluir(long id){
+        for(Professor professor:professores){
+            if (professor.getId().equals(id)){
+                professores.remove(professor);
+                return;
+            }
+        }
+    }
+    public void atualizar(Professor professorEditado){
+        for(Professor professor:professores){
+            if (professor.getId().equals(professorEditado.getId())){
+                professor.setNome(professorEditado.getNome());
+                professor.setEmail(professorEditado.getEmail());
+                return;
+            }
+        }
+    }
 }

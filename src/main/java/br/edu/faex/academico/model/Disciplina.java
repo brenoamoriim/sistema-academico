@@ -42,4 +42,8 @@ public class Disciplina {
     public void setCurso(Curso curso) {
         this.curso = curso;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
