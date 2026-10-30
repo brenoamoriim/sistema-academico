@@ -2,7 +2,7 @@ package br.edu.faex.academico.model;
 
 public class Aluno {
     private Long id;
-    private static String nome;
+    private String nome;
     private String email;
     private boolean ativo = true;
 
@@ -22,7 +22,7 @@ public class Aluno {
         this.id = id;
     }
 
-    public static String getNome() {
+    public String getNome() {
         return nome;
     }
 

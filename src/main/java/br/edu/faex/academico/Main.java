@@ -1,20 +1,26 @@
 package br.edu.faex.academico;
 
-import br.edu.faex.academico.config.Conexao;
 import br.edu.faex.academico.controller.AlunoController;
 import br.edu.faex.academico.model.Aluno;
 import br.edu.faex.academico.repository.AlunoRepository;
 import br.edu.faex.academico.service.AlunoService;
 
-import java.sql.Connection;
-
 public class Main {
     static void main() {
-        try (Connection con = Conexao.conectar()){
-            System.out.println("Conectado");
-        } catch (Exception e) {
-            System.out.println("Erro ao conectar");
-            System.out.println(e.getMessage());
+        AlunoRepository repository = new AlunoRepository();
+        AlunoService service = new AlunoService(repository);
+        AlunoController controller = new AlunoController(service);
+
+        Aluno aluno1 = new Aluno("Breno", "breno@example.com");
+        Aluno aluno2 = new Aluno("Maria", "maria@example.com");
+        Aluno aluno3 = new Aluno("Jose", "jose@example.com");
+
+        controller.cadastrar(aluno1);
+        controller.cadastrar(aluno2);
+        controller.cadastrar(aluno3);
+
+        for (Aluno aluno : controller.listar()) {
+            System.out.println(aluno.getId() + " - " + aluno.getNome() + " - " + aluno.getEmail());
         }
     }
 }

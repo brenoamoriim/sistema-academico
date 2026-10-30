@@ -7,7 +7,6 @@ import java.util.List;
 
 public class AlunoService {
     private AlunoRepository repository;
-    private Long proximoId = 1L;
 
     public AlunoService(AlunoRepository repository) {
         this.repository = repository;
@@ -29,14 +28,10 @@ public class AlunoService {
             return;
         }
 
-        if (repository.listar().stream()
-                .anyMatch(a -> a.getEmail().equalsIgnoreCase(aluno.getEmail()))) {
+        if (repository.buscarPorEmail(aluno.getEmail()) != null) {
             System.out.println("E-mail já cadastrado.");
             return;
         }
-
-        aluno.setId(proximoId);
-        proximoId++;
 
         this.repository.salvar(aluno);
         System.out.println("Aluno cadastrado com sucesso.");
@@ -49,7 +44,7 @@ public class AlunoService {
     public Aluno buscarPorId(Long id){
         Aluno aluno = repository.buscarPorId(id);
         if (aluno == null){
-            System.out.println("");
+            System.out.println("Aluno não encontrado.");
             return null;
         }
         return aluno;
@@ -76,12 +71,13 @@ public class AlunoService {
             return;
         }
 
-        if (!alunoEditado.getEmail().contains("@")) {
+        if (alunoEditado.getEmail() == null || !alunoEditado.getEmail().contains("@")) {
             System.out.println("E-mail inválido.");
             return;
         }
-        if (repository.listar().stream()
-                .anyMatch(a -> a.getEmail().equalsIgnoreCase(alunoEditado.getEmail()))) {
+
+        Aluno comMesmoEmail = repository.buscarPorEmail(alunoEditado.getEmail());
+        if (comMesmoEmail != null && !comMesmoEmail.getId().equals(alunoEditado.getId())) {
             System.out.println("E-mail já cadastrado.");
             return;
         }
