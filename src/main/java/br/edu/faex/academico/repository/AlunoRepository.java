@@ -13,6 +13,8 @@ import java.util.List;
 
 public class AlunoRepository {
 
+    // Versão anterior (try-with-resources), substituída pela versão da aula
+    /*
     public void salvar(Aluno aluno){
         String sql = "INSERT INTO alunos (nome, email, ativo) VALUES (?, ?, ?)";
         try (Connection conexao = Conexao.conectar();
@@ -31,7 +33,31 @@ public class AlunoRepository {
             System.out.println("Erro ao salvar aluno: " + e.getMessage());
         }
     }
+    */
 
+    // Aula POO Online - Implementando o método salvar()
+    public void salvar(Aluno aluno){
+        String sql = "INSERT INTO alunos (nome, email, ativo) VALUES (?, ?, ?)";
+        try {
+            Connection conexao = Conexao.conectar();
+
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getEmail());
+            stmt.setBoolean(3, aluno.isAtivo());
+            stmt.executeUpdate();
+
+            stmt.close();
+            conexao.close();
+
+            System.out.println("Aluno cadastrado com sucesso!");
+        } catch (SQLException e) {
+            System.out.println("Erro ao cadastrar: " + e.getMessage());
+        }
+    }
+
+    // Versão anterior (try-with-resources), substituída pela versão da atividade
+    /*
     public List<Aluno> listar(){
         List<Aluno> alunos = new ArrayList<>();
         String sql = "SELECT id, nome, email, ativo FROM alunos";
@@ -43,6 +69,35 @@ public class AlunoRepository {
             }
         } catch (SQLException e) {
             System.out.println("Erro ao listar alunos: " + e.getMessage());
+        }
+        return alunos;
+    }
+    */
+
+    // Atividade prática POO - Implementando o método listar()
+    public List<Aluno> listar(){
+        List<Aluno> alunos = new ArrayList<>();
+        String sql = "SELECT id, nome, email, ativo FROM alunos";
+        try {
+            Connection conexao = Conexao.conectar();
+
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            ResultSet resultado = stmt.executeQuery();
+
+            while (resultado.next()) {
+                Aluno aluno = new Aluno();
+                aluno.setId(resultado.getLong("id"));
+                aluno.setNome(resultado.getString("nome"));
+                aluno.setEmail(resultado.getString("email"));
+                aluno.setAtivo(resultado.getBoolean("ativo"));
+                alunos.add(aluno);
+            }
+
+            resultado.close();
+            stmt.close();
+            conexao.close();
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar: " + e.getMessage());
         }
         return alunos;
     }

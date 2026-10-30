@@ -34,7 +34,8 @@ public class AlunoService {
         }
 
         this.repository.salvar(aluno);
-        System.out.println("Aluno cadastrado com sucesso.");
+        // A mensagem de sucesso agora é exibida pelo método salvar() do repository
+        // System.out.println("Aluno cadastrado com sucesso.");
     }
 
     public List<Aluno> listar(){
