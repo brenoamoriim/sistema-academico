@@ -1,9 +1,19 @@
 package br.edu.faex.academico;
 
 import br.edu.faex.academico.controller.AlunoController;
+import br.edu.faex.academico.controller.CursoController;
+import br.edu.faex.academico.controller.ProfessorController;
 import br.edu.faex.academico.model.Aluno;
+import br.edu.faex.academico.model.Curso;
+import br.edu.faex.academico.model.Professor;
 import br.edu.faex.academico.repository.AlunoRepository;
+import br.edu.faex.academico.repository.CursoRepository;
+import br.edu.faex.academico.repository.ProfessorRepository;
 import br.edu.faex.academico.service.AlunoService;
+import br.edu.faex.academico.service.CursoService;
+import br.edu.faex.academico.service.ProfessorService;
+
+import java.util.List;
 
 public class Main {
     static void main() {
@@ -11,7 +21,6 @@ public class Main {
         AlunoService service = new AlunoService(repository);
         AlunoController controller = new AlunoController(service);
 
-        // Teste anterior
         // Aluno aluno1 = new Aluno("Breno", "breno@example.com");
         // Aluno aluno2 = new Aluno("Maria", "maria@example.com");
         // Aluno aluno3 = new Aluno("Jose", "jose@example.com");
@@ -20,18 +29,96 @@ public class Main {
         // controller.cadastrar(aluno2);
         // controller.cadastrar(aluno3);
 
-        // Etapa 10 - Testar a implementação (Aula POO Online)
         Aluno aluno1 = new Aluno("Aleandro Ribeiro de Lima", "aleandro.lima@faex.edu.br");
         Aluno aluno2 = new Aluno("Maria Helena de Lima", "maria.lima@faex.edu.br");
 
-        // Cadastrar
         controller.cadastrar(aluno1);
         controller.cadastrar(aluno2);
 
-        // Listar (Atividade prática POO)
+        // for (Aluno aluno : controller.listar()) {
+        //     System.out.println(aluno.getId() + " - " + aluno.getNome() + " - " + aluno.getEmail());
+        // }
 
-        for (Aluno aluno : controller.listar()) {
-            System.out.println(aluno.getId() + " - " + aluno.getNome() + " - " + aluno.getEmail());
+        Aluno alunoEncontrado = controller.buscarPorId(1L);
+
+        if (alunoEncontrado != null) {
+            System.out.println("Aluno encontrado!");
+            System.out.println("ID: " + alunoEncontrado.getId());
+            System.out.println("Nome: " + alunoEncontrado.getNome());
+            System.out.println("E-mail: " + alunoEncontrado.getEmail());
+        } else {
+            System.out.println("Aluno não encontrado!");
+        }
+
+        controller.excluir(1L);
+
+        System.out.println("\n===== ALUNOS APÓS EXCLUSÃO =====");
+
+        List<Aluno> alunos = controller.listar();
+
+        for (Aluno aluno : alunos) {
+            System.out.println("ID: " + aluno.getId());
+            System.out.println("Nome: " + aluno.getNome());
+            System.out.println("E-mail: " + aluno.getEmail());
+            System.out.println("--------------------------");
+        }
+
+        CursoRepository cursoRepository = new CursoRepository();
+        CursoService cursoService = new CursoService(cursoRepository);
+        CursoController cursoController = new CursoController(cursoService);
+
+        Curso curso1 = new Curso("Análise e Desenvolvimento de Sistemas", "Presencial");
+        Curso curso2 = new Curso("Sistemas de Informação", "EAD");
+
+        cursoController.cadastrar(curso1);
+        cursoController.cadastrar(curso2);
+
+        System.out.println("\n===== LISTA DE CURSOS =====");
+
+        List<Curso> cursos = cursoController.listar();
+
+        for (Curso curso : cursos) {
+            System.out.println("ID: " + curso.getId());
+            System.out.println("Nome: " + curso.getNome());
+            System.out.println("Modalidade: " + curso.getModalidade());
+            System.out.println("--------------------------");
+        }
+
+        if (!cursos.isEmpty()) {
+            Long idCurso = cursos.get(0).getId();
+
+            cursoController.excluir(idCurso);
+
+            System.out.println("\nCurso excluído!");
+        }
+
+        ProfessorRepository professorRepository = new ProfessorRepository();
+        ProfessorService professorService = new ProfessorService(professorRepository);
+        ProfessorController professorController = new ProfessorController(professorService);
+
+        Professor professor1 = new Professor("Carlos Oliveira", "carlos.oliveira@faex.edu.br");
+        Professor professor2 = new Professor("Ana Souza", "ana.souza@faex.edu.br");
+
+        professorController.cadastrar(professor1);
+        professorController.cadastrar(professor2);
+
+        System.out.println("\n===== LISTA DE PROFESSORES =====");
+
+        List<Professor> professores = professorController.listar();
+
+        for (Professor professor : professores) {
+            System.out.println("ID: " + professor.getId());
+            System.out.println("Nome: " + professor.getNome());
+            System.out.println("E-mail: " + professor.getEmail());
+            System.out.println("--------------------------");
+        }
+
+        if (!professores.isEmpty()) {
+            Long idProfessor = professores.get(0).getId();
+
+            professorController.excluir(idProfessor);
+
+            System.out.println("\nProfessor excluído!");
         }
     }
 }
