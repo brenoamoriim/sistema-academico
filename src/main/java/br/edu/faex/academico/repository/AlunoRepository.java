@@ -7,18 +7,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlunoRepository {
 
-    // Versão anterior (try-with-resources), substituída pela versão da aula
     /*
     public void salvar(Aluno aluno){
         String sql = "INSERT INTO alunos (nome, email, ativo) VALUES (?, ?, ?)";
         try (Connection conexao = Conexao.conectar();
-             PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = conexao.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, aluno.getNome());
             statement.setString(2, aluno.getEmail());
             statement.setBoolean(3, aluno.isAtivo());
@@ -35,7 +33,6 @@ public class AlunoRepository {
     }
     */
 
-    // Aula POO Online - Implementando o método salvar()
     public void salvar(Aluno aluno){
         String sql = "INSERT INTO alunos (nome, email, ativo) VALUES (?, ?, ?)";
         try {
@@ -56,7 +53,6 @@ public class AlunoRepository {
         }
     }
 
-    // Versão anterior (try-with-resources), substituída pela versão da atividade
     /*
     public List<Aluno> listar(){
         List<Aluno> alunos = new ArrayList<>();
@@ -74,7 +70,6 @@ public class AlunoRepository {
     }
     */
 
-    // Atividade prática POO - Implementando o método listar()
     public List<Aluno> listar(){
         List<Aluno> alunos = new ArrayList<>();
         String sql = "SELECT id, nome, email, ativo FROM alunos";
@@ -102,6 +97,7 @@ public class AlunoRepository {
         return alunos;
     }
 
+    /*
     public Aluno buscarPorId(Long id){
         String sql = "SELECT id, nome, email, ativo FROM alunos WHERE id = ?";
         try (Connection conexao = Conexao.conectar();
@@ -112,6 +108,38 @@ public class AlunoRepository {
                     return mapear(resultado);
                 }
             }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar aluno: " + e.getMessage());
+        }
+        return null;
+    }
+    */
+
+    public Aluno buscarPorId(Long id){
+        String sql = "SELECT * FROM alunos WHERE id = ?";
+        try {
+            Connection conexao = Conexao.conectar();
+
+            PreparedStatement comando = conexao.prepareStatement(sql);
+            comando.setLong(1, id);
+            ResultSet resultado = comando.executeQuery();
+
+            if (resultado.next()) {
+                Aluno aluno = new Aluno();
+                aluno.setId(resultado.getLong("id"));
+                aluno.setNome(resultado.getString("nome"));
+                aluno.setEmail(resultado.getString("email"));
+                aluno.setAtivo(resultado.getBoolean("ativo"));
+
+                resultado.close();
+                comando.close();
+                conexao.close();
+                return aluno;
+            }
+
+            resultado.close();
+            comando.close();
+            conexao.close();
         } catch (SQLException e) {
             System.out.println("Erro ao buscar aluno: " + e.getMessage());
         }
@@ -134,12 +162,36 @@ public class AlunoRepository {
         return null;
     }
 
+    /*
     public void excluir(Long id){
         String sql = "DELETE FROM alunos WHERE id = ?";
         try (Connection conexao = Conexao.conectar();
              PreparedStatement statement = conexao.prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir aluno: " + e.getMessage());
+        }
+    }
+    */
+
+    public void excluir(Long id){
+        String sql = "DELETE FROM alunos WHERE id = ?";
+        try {
+            Connection conexao = Conexao.conectar();
+
+            PreparedStatement comando = conexao.prepareStatement(sql);
+            comando.setLong(1, id);
+            int registrosAfetados = comando.executeUpdate();
+
+            comando.close();
+            conexao.close();
+
+            if (registrosAfetados > 0) {
+                System.out.println("Aluno excluído com sucesso!");
+            } else {
+                System.out.println("Nenhum aluno encontrado com o ID informado.");
+            }
         } catch (SQLException e) {
             System.out.println("Erro ao excluir aluno: " + e.getMessage());
         }

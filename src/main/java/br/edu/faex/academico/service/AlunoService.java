@@ -34,7 +34,6 @@ public class AlunoService {
         }
 
         this.repository.salvar(aluno);
-        // A mensagem de sucesso agora é exibida pelo método salvar() do repository
         // System.out.println("Aluno cadastrado com sucesso.");
     }
 
@@ -58,7 +57,7 @@ public class AlunoService {
             return;
         }
         repository.excluir(id);
-        System.out.println("Aluno excluído com sucesso.");
+        // System.out.println("Aluno excluído com sucesso.");
     }
 
     public void atualizar(Aluno alunoEditado){
